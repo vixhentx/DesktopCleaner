@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="DesktopCleaner.Views.BackupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DesktopCleaner.Views"
+             xmlns:AduSkin="clr-namespace:AduSkin.Controls.Metro;assembly=AduSkin"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{StaticResource WindowBackground}">
+    <Grid>
+        <Label Content="备份文件夹日期:" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Grid  Margin="0,30,150,0">
+            <AduSkin:AduDataGrid x:Name="datagridFileview">
+                <DataGrid.RowStyle >
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="LightGray"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#90F670"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn CanUserResize="False" Header="Select">
+                        <DataGridTemplateColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <AduSkin:AduCheckBox Cursor="Hand" Checked="AduCheckBox_Checked" Unchecked="AduCheckBox_Unchecked"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.HeaderTemplate>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <AduSkin:AduCheckBox Margin="10,0,0,0" IsChecked="{Binding Path=IsChecked,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn CanUserResize="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Width="32" Height="32" Stretch="Uniform" Source="{Binding FileIcon}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="*" Header="名称" Binding="{Binding FileName}"/>
+                    <DataGridTextColumn Width="*" Header="类型" Binding="{Binding FileType}"/>
+                    <DataGridTextColumn Width="*" Header="修改日期" Binding="{Binding FileDate}"/>
+                    <DataGridTextColumn Width="*" Header="大小" Binding="{Binding FileSize}"/>
+                </DataGrid.Columns>
+            </AduSkin:AduDataGrid>
+        </Grid>
+        <StackPanel HorizontalAlignment="Right" Width="150" Margin="0,25,0,0">
+            <AduSkin:AduFlatButton x:Name="btnDeleteSelected" Content="删除选中文件(夹)" Margin="0,15,0,15" Click="btnDeleteSelected_Click"/>
+            <AduSkin:AduFlatButton x:Name="btnDeleteChecked" Content="删除勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/>
+            <AduSkin:AduFlatButton x:Name="btnRestoreSelected" Content="还原选中文件(夹)" Margin="0,15,0,15" Click="btnDeleteSelected_Click"/>
+            <AduSkin:AduFlatButton x:Name="btnRestoreChecked" Content="还原勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/>
+            <AduSkin:AduFlatButton x:Name="btnOpenPublicDesktop" Content="打开备份文件夹" Margin="0,15,0,15" Click="btnOpenPublicDesktop_Click"/>
+            <AduSkin:AduFlatButton x:Name="btnReflash" Content="刷新" Margin="0,15,0,15" Click="btnReflash_Click"/>
+
+        </StackPanel>
+    </Grid>
+</UserControl>
