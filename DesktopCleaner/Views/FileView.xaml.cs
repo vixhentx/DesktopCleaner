@@ -47,7 +47,7 @@ namespace DesktopCleaner.Views
         {
             string folderpath = Functions.SelectFolder();
             if (folderpath == null) return;
-            FileHelper.CopyFolder(folderpath:folderpath, publicDesktopDir);
+            FileHelper.CopyFolder(folderpath, Path.Combine(publicDesktopDir, Path.GetFileName(folderpath)));
             FileList.Clear();
             GetFiles();
             Update();
@@ -102,7 +102,6 @@ namespace DesktopCleaner.Views
         {
             if (datagridFileview.SelectedIndex < 0) return;
             string path = FileList[datagridFileview.SelectedIndex].FilePath;
-            FileInfo fi = new FileInfo(path);
             FileHelper.Delete(path);
             FileList.Clear();
             GetFiles();
@@ -112,16 +111,9 @@ namespace DesktopCleaner.Views
         {
             foreach (FileItem file in FileList)
             {
-                try
+                if (file.IsChecked)
                 {
-                    if (file.IsChecked)
-                    {
-                        FileHelper.Delete(file.FilePath);
-                    }
-                }catch 
-                {
-                    AduMessageBox.Show("无操作权限！请以管理员权限运行重试！");
-                    break;
+                    FileHelper.Delete(file.FilePath);
                 }
             }
             FileList.Clear();
@@ -166,30 +158,13 @@ namespace DesktopCleaner.Views
                 int count = ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)).Length;
                 for (int i = 0; i < count; i++)
                 {
-                    filepath = ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)).GetValue(i).ToString(); ;
+                    filepath = ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)).GetValue(i).ToString(); 
                     if(FileHelper.IsDir(filepath))
                     {
-                        string[] files = Directory.GetFiles(filepath);
-                        string targetpath = Path.Combine(publicDesktopDir+Path.GetDirectoryName(filepath));
-                        if (!Directory.Exists(targetpath)) Directory.CreateDirectory(targetpath);
-                        try
-                        {             // Copy the files and overwrite destination files if they already exist.
-                            foreach (string s in files)
-                            {
-                                // Use static Path methods to extract only the file name from the path.
-                                string destFile = Path.Combine(targetpath, Path.GetFileName(s));
-                                File.Copy(s, destFile, true);
-                            }
-                        }
-                        catch { AduMessageBox.Show("无操作权限！请以管理员权限运行重试！"); return; }
+                        FileHelper.CopyFolder(filepath, Path.Combine(publicDesktopDir, Path.GetFileName(filepath)));
                     }else//是文件
                     {
-                        FileInfo x = new FileInfo(filepath);
-                        try
-                        {
-                            x.CopyTo(Path.Combine(publicDesktopDir,x.Name), true);
-                        }
-                        catch { AduMessageBox.Show("无操作权限！请以管理员权限运行重试！"); return; }
+                        FileHelper.DCC("Copy", filepath ,Path.Combine(publicDesktopDir, Path.GetFileName(filepath)));
                     }
                 }
             }

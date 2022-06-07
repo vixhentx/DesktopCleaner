@@ -14,7 +14,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace DesktopCleaner.Views
 {
@@ -25,32 +24,57 @@ namespace DesktopCleaner.Views
     {
         private List<FileItem> FileList;
         private string backupDir;
+        private static string inipath = Path.Combine(Environment.CurrentDirectory, "Options.ini"),
+            backuppath = Functions.INIRead("用户设置", "BackupPath", inipath),
+            desktopDir = Functions.INIRead("用户设置", "DesktopPath", inipath);
 
         public BackupView()
         {
             InitializeComponent();
-            //GetFiles();
+            FileList = new List<FileItem>();
+            datePicker.SelectedDate = DateTime.Now;
+
+            SyncTime();
+            GetFiles();
+            datagridFileview.ItemsSource = FileList;
         }
         #region Events
 
         private void btnDeleteSelected_Click(object sender, RoutedEventArgs e)
         {
-
+            if (datagridFileview.SelectedIndex < 0) return;
+            string path = FileList[datagridFileview.SelectedIndex].FilePath;
+            FileHelper.Delete(path);
+            FileList.Clear();
+            GetFiles();
+            Update();
         }
 
         private void btnDeleteChecked_Click(object sender, RoutedEventArgs e)
         {
-
+            foreach (FileItem file in FileList)
+            {
+                if (file.IsChecked)
+                {
+                    FileHelper.Delete(file.FilePath);
+                }
+            }
+            FileList.Clear();
+            GetFiles();
+            Update();
         }
 
         private void btnOpenPublicDesktop_Click(object sender, RoutedEventArgs e)
         {
-
+            System.Diagnostics.Process.Start(backupDir);
         }
 
         private void btnReflash_Click(object sender, RoutedEventArgs e)
         {
-
+            FileList.Clear();
+            SyncTime();
+            GetFiles();
+            Update();
         }
         #endregion
         private void GetFiles()
@@ -112,6 +136,54 @@ namespace DesktopCleaner.Views
                 fileItem.IsChecked = false;
             }
             Update();
+        }
+
+        private void btnRestoreSelected_Click(object sender, RoutedEventArgs e)
+        {
+            if (datagridFileview.SelectedIndex < 0) return;
+            string path = FileList[datagridFileview.SelectedIndex].FilePath;
+            if(FileHelper.IsDir(path))
+            {
+                FileHelper.MoveFolder(path, Path.Combine(desktopDir,Path.GetFileName(path)));
+                FileHelper.Delete(path);
+            }
+            else FileHelper.Move(path, Path.Combine(desktopDir,Path.GetFileName(path)));
+            FileList.Clear();
+            GetFiles();
+            Update();
+        }
+
+        private void btnConfirm_Click(object sender, RoutedEventArgs e)
+        {
+            FileList.Clear();
+            SyncTime();
+            GetFiles();
+            Update();
+        }
+
+        private void btnRestoreChecked_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (FileItem file in FileList)
+            {
+                if (file.IsChecked)
+                {
+                    if (FileHelper.IsDir(file.FilePath))
+                    {
+                        FileHelper.MoveFolder(file.FilePath, Path.Combine(desktopDir, file.FileName));
+                        FileHelper.Delete(file.FilePath);
+                    }
+                    else FileHelper.Move(file.FilePath, Path.Combine(desktopDir, file.FileName));
+                }
+            }
+            FileList.Clear();
+            GetFiles();
+            Update();
+        }
+
+        private void SyncTime()
+        {
+            DateTime dt = (DateTime)datePicker.SelectedDate;
+            backupDir = Path.Combine(backuppath, dt.ToString("yyyy\\\\MM\\\\dd"));
         }
     }
 }

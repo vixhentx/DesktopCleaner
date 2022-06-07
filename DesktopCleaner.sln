@@ -5,6 +5,10 @@ VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopCleaner", "DesktopCleaner\DesktopCleaner.csproj", "{C01B8D29-82D9-4762-8468-368785FAC546}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopCleanerClient", "DesktopCleanerClient\DesktopCleanerClient.csproj", "{BABD63E3-A231-4A2D-94E4-2BCD5FCA81B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesktopCleanerConsole", "DesktopCleanerConsole\DesktopCleanerConsole.csproj", "{60060F64-A43C-45B1-A88B-E12394C2F2A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C01B8D29-82D9-4762-8468-368785FAC546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C01B8D29-82D9-4762-8468-368785FAC546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C01B8D29-82D9-4762-8468-368785FAC546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BABD63E3-A231-4A2D-94E4-2BCD5FCA81B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BABD63E3-A231-4A2D-94E4-2BCD5FCA81B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BABD63E3-A231-4A2D-94E4-2BCD5FCA81B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BABD63E3-A231-4A2D-94E4-2BCD5FCA81B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60060F64-A43C-45B1-A88B-E12394C2F2A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60060F64-A43C-45B1-A88B-E12394C2F2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60060F64-A43C-45B1-A88B-E12394C2F2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60060F64-A43C-45B1-A88B-E12394C2F2A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

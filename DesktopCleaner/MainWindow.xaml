@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         xmlns:view="clr-namespace:DesktopCleaner.Views"
         
-        Title="DesktopCleaner控制菜单" MinHeight="340" MinWidth="500"
+        Title="DesktopCleaner控制菜单" MinHeight="340" MinWidth="500" Icon="/favicon-32x32.png"
          >
         
     <Grid x:Name="GlobalPanel">
