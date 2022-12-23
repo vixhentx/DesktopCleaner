@@ -21,21 +21,63 @@ namespace DesktopCleaner.Views
     /// </summary>
     public partial class OptionView : UserControl
     {
-        string inipath = Path.Combine(Environment.CurrentDirectory,"Options.ini"),defultBackupPath=@"D:\DesktopCleanerBackup";
+        string inipath = Path.Combine(Environment.CurrentDirectory,"Options.ini"),defultBackupPath=Path.Combine(Functions.GetAvaliableDisk(),"DesktopCleanerBackup"),startuppath= Environment.GetFolderPath(Environment.SpecialFolder.Startup);
         public OptionView()
         {
             InitializeComponent();
-            if(!Directory.Exists(defultBackupPath))FileHelper.DCC("CreateFolder",defultBackupPath);
+            Init();
+        }
+
+        private void Init()
+        {
+            if (!Directory.Exists(defultBackupPath)) FileHelper.DCC("CreateFolder", defultBackupPath);
             if (!File.Exists(inipath)) WriteDefult();
             ReadOptions();
-            if((bool)checkShortCut.IsChecked)//快捷方式
-            { 
-
-            }
-            if((bool)checkStartup.IsChecked)//开机启动
+            if ((bool)checkShortCut.IsChecked)//快捷方式
             {
+                string[] refers =
+                {
+                    Path.Combine(Environment.CurrentDirectory,"DesktopCleaner.exe"),
+                    Path.Combine(Environment.CurrentDirectory,"DesktopCleanerClient.exe")
+                }, shortcutnames =
+                {
+                    "DesktopCleaner设置.lnk",
+                    "立即清理桌面.lnk"
+                };
+                for (int i = 0; i < refers.Length; i++)
+                {
+                    Functions.CreateShortcut(refers[i], Path.Combine(Functions.GetAllUsersDesktopFolderPath(), shortcutnames[i]));
+                }
+            }
+            else
+            {
+                string[] refers =
+                {
+                    Path.Combine(Environment.CurrentDirectory,"DesktopCleaner.exe"),
+                    Path.Combine(Environment.CurrentDirectory,"DesktopCleanerClient.exe")
+                }, shortcutnames =
+                {
+                    "DesktopCleaner设置.lnk",
+                    "立即清理桌面.lnk"
+                };
+                for (int i = 0; i < refers.Length; i++)
+                {
+                    if (File.Exists(Path.Combine(Functions.GetAllUsersDesktopFolderPath(), shortcutnames[i])))
+                        FileHelper.Delete(Path.Combine(Functions.GetAllUsersDesktopFolderPath(), shortcutnames[i]));//删除快捷方式
+                }
+            }
 
-            }    
+            if ((bool)checkStartup.IsChecked)//开机启动
+            {
+                string refer = Path.Combine(Environment.CurrentDirectory, "DesktopCleanerClient.exe");
+                string shortcut = Path.Combine(startuppath, "立即清理桌面.lnk");
+                Functions.CreateShortcut(refer, shortcut);
+            }
+            else
+            {
+                string shortcut = Path.Combine(startuppath, "立即清理桌面.lnk");
+                if (File.Exists(shortcut)) FileHelper.Delete(shortcut);
+            }
         }
 
         private void ReadOptions()
@@ -128,6 +170,12 @@ namespace DesktopCleaner.Views
             textDesktopPath.Text = Functions.SelectFolder();
         }
 
+        private void btnReset_Click(object sender, RoutedEventArgs e)
+        {
+            WriteDefult();
+            ReadOptions();
+        }
+
         private void btnViewBackupPath_Click(object sender, RoutedEventArgs e)
         {
             textBackupPath.Text = Functions.SelectFolder();
@@ -136,7 +184,7 @@ namespace DesktopCleaner.Views
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             SaveOptions();
-            
+            Init();
         }
     }
 }

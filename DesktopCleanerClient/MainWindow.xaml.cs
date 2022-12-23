@@ -28,8 +28,16 @@ namespace DesktopCleanerClient
         public MainWindow()
         {
             InitializeComponent();
-            Thread thread = new Thread(new ThreadStart(Tackle));
-            thread.Start();
+            ReadOption();
+            if (IsQuiet)
+            {
+                Tackle_Quiet();
+            }
+            else
+            {
+                Thread thread = new Thread(new ThreadStart(Tackle));
+                thread.Start();
+            }
         }
 
         private void ReadOption()
@@ -58,7 +66,6 @@ namespace DesktopCleanerClient
         private void Tackle()
         {
             //开始表演
-            ReadOption();
             if (isDate) backupPath = Path.Combine(backupPath, DateTime.Now.ToString("yyyy\\\\MM\\\\dd"));
             OutPut(string.Format("即将清理的桌面路径:{0} ,备份路径:{1},是否按日期分文件夹:{2} ,是否进行备份{3}", desktopPath, backupPath, isDate.ToString(), IsBackup.ToString()));
             for (int i = 5; i > 0; i--)
@@ -155,6 +162,59 @@ namespace DesktopCleanerClient
            delegate
            {
              windowMain.Close();
+           })
+           );
+        }
+        private void Tackle_Quiet()
+        {
+            //开始表演
+            
+            if (isDate) backupPath = Path.Combine(backupPath, DateTime.Now.ToString("yyyy\\\\MM\\\\dd"));
+            if (!Directory.Exists(backupPath)) FileHelper.DCC_quick("CreateFolder", backupPath);
+            if (IsBackup)
+            {
+                DirectoryInfo d = new DirectoryInfo(desktopPath);
+                FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
+                string targetpath, file;
+                for (int i = 0; i < fsinfos.Length; i++)
+                {
+                    file = fsinfos[i].FullName;
+                    if (fsinfos[i] is DirectoryInfo)
+                    {
+                        targetpath = Path.Combine(backupPath, fsinfos[i].Name);
+                        if (!Directory.Exists(targetpath)) FileHelper.DCC("CreateFolder", targetpath);
+                        FileHelper.MoveFolder(file, targetpath);
+                        FileHelper.Delete(file);
+                    }
+                    else
+                    {
+                        targetpath = Path.Combine(backupPath, fsinfos[i].Name);
+                        FileHelper.DCC("Move", file, targetpath);
+                    }
+                }
+            }
+            else
+            {
+                DirectoryInfo d = new DirectoryInfo(desktopPath);
+                FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
+                string file;
+                for (int i = 0; i < fsinfos.Length; i++)
+                {
+                    file = fsinfos[i].FullName;
+                    if (fsinfos[i] is DirectoryInfo)
+                    {
+                        FileHelper.DCC("Delete", file);
+                    }
+                    else
+                    {
+                        FileHelper.DCC("Delete", file);
+                    }
+                }
+            }
+            windowMain.Dispatcher.Invoke(new Action(
+           delegate
+           {
+               windowMain.Close();
            })
            );
         }

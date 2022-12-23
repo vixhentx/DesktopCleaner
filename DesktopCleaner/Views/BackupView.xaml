@@ -14,6 +14,7 @@
             <AduSkin:AduDataGrid x:Name="datagridFileview">
                 <DataGrid.RowStyle >
                     <Style TargetType="DataGridRow">
+                        <EventSetter Event="GotFocus" Handler="DataGridRow_GotFocus"/>
                         <Setter Property="Background" Value="White"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -55,9 +56,9 @@
         </Grid>
         <StackPanel HorizontalAlignment="Right" Width="150" Margin="0,25,0,0">
             <AduSkin:AduFlatButton x:Name="btnRestoreSelected" Content="还原选中文件(夹)" Margin="0,15,0,15" Click="btnRestoreSelected_Click" />
-            <AduSkin:AduFlatButton x:Name="btnRestoreChecked" Content="还原勾选文件(夹)" Margin="0,15,0,15" Click="btnRestoreChecked_Click" />
+            <!--<AduSkin:AduFlatButton x:Name="btnRestoreChecked" Content="还原勾选文件(夹)" Margin="0,15,0,15" Click="btnRestoreChecked_Click" /> -->
             <AduSkin:AduFlatButton x:Name="btnDeleteSelected" Content="删除选中文件(夹)" Margin="0,15,0,15" Click="btnDeleteSelected_Click"/>
-            <AduSkin:AduFlatButton x:Name="btnDeleteChecked" Content="删除勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/>
+            <!-- <AduSkin:AduFlatButton x:Name="btnDeleteChecked" Content="删除勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/> -->
             <AduSkin:AduFlatButton x:Name="btnOpenPublicDesktop" Content="打开备份文件夹" Margin="0,15,0,15" Click="btnOpenPublicDesktop_Click"/>
             <AduSkin:AduFlatButton x:Name="btnReflash" Content="刷新" Margin="0,15,0,15" Click="btnReflash_Click"/>
 

@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("DesktopCleanerConsole")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("进行文件操作、注册表操作的程序")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("vix_hentx")]
 [assembly: AssemblyProduct("DesktopCleanerConsole")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]

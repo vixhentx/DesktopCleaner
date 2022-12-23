@@ -1,8 +1,10 @@
 ﻿
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
@@ -19,6 +21,9 @@ namespace DesktopCleaner.DllUse
         private static extern int SHGetFolderPath(IntPtr hwndOwner, int nFolder, IntPtr hToken, int dwFlags, StringBuilder lpszPath);
         private const int MAX_PATH = 260;
         private const int CSIDL_COMMON_DESKTOPDIRECTORY = 0x0019;
+
+        
+
         /// <summary>
         /// 获取Public Desktop
         /// </summary>
@@ -454,12 +459,86 @@ namespace DesktopCleaner.DllUse
             }
             return path;
         }
-        /// <summary>
-        /// 判断目标是文件夹还是目录(目录包括磁盘)
-        /// </summary>
-        /// <param name="filepath">路径</param>
-        /// <returns>返回true为一个文件夹，返回false为一个文件</returns>
-        
-        #endregion
+        static List<string> GetAvaliableDisks()
+        {
+            List<string> deviceIDs = new List<string>();
+            ManagementObjectSearcher query = new ManagementObjectSearcher("SELECT  *  From  Win32_LogicalDisk ");
+            ManagementObjectCollection queryCollection = query.Get();
+            foreach (ManagementObject mo in queryCollection)
+            {
+
+                switch (int.Parse(mo["DriveType"].ToString()))
+                {
+                    /*
+                        case (int)DriveType.Removable:   //可以移动磁盘       
+                            {
+                                //MessageBox.Show("可以移动磁盘");  
+                                deviceIDs.Add(mo["DeviceID"].ToString());
+                                break;
+                            }
+                    */
+                    case (int)DriveType.Fixed:   //本地磁盘       
+                        {
+                            //MessageBox.Show("本地磁盘");  
+                            deviceIDs.Add(mo["DeviceID"].ToString());
+                            break;
+                        }
+                        /*
+                        case (int)DriveType.CDRom:   //CD   rom   drives       
+                            {
+                                //MessageBox.Show("CD   rom   drives ");  
+                                break;
+                            }
+                        case (int)DriveType.Network:   //网络驱动     
+                            {
+                                //MessageBox.Show("网络驱动器 ");  
+                                break;
+                            }
+                        case (int)DriveType.Ram:
+                            {
+                                //MessageBox.Show("驱动器是一个 RAM 磁盘 ");  
+                                break;
+                            }
+                        case (int)DriveType.NoRootDirectory:
+                            {
+                                //MessageBox.Show("驱动器没有根目录 ");  
+                                break;
+                            }
+                        default:   //defalut   to   folder       
+                            {
+                                //MessageBox.Show("驱动器类型未知 ");  
+                                break;
+                            }
+                        */
+                }
+
+            }
+            return deviceIDs;
         }
+        static public string GetAvaliableDisk()
+        {
+            List<string> disks = GetAvaliableDisks();
+            if (disks.Count < 2) return disks[0] + "\\";
+            else return disks[1] +"\\";
+         }
+
+        #endregion
+
+        #region 快捷方式
+        /// <summary>
+        /// 创建快捷方式
+        /// </summary>
+        /// <param name="directory">快捷方式所处的文件夹</param>
+        /// <param name="shortcutName">快捷方式名称</param>
+        /// <param name="targetPath">目标路径</param>
+        /// <param name="description">描述</param>
+        /// <param name="iconLocation">图标路径，格式为"可执行文件或DLL路径, 图标编号"，
+        /// 例如System.Environment.SystemDirectory + "\\" + "shell32.dll, 165"</param>
+        /// <remarks></remarks>
+        public static void CreateShortcut(string referFilePath, string lnkFilePath)
+        {
+            FileHelper.DCC("CreateShortcut", referFilePath, lnkFilePath);
+        }
+        #endregion
+    }
 }

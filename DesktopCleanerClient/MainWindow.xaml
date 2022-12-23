@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:DesktopCleanerClient"
         xmlns:Aduskin="clr-namespace:AduSkin.Controls.Metro;assembly=AduSkin"
         mc:Ignorable="d"
-        Title="DesktopCleanerClient" Height="300" Width="400">
+        Title="DesktopCleanerClient" Height="300" Width="400" Icon="/favicon-32x32.png"
+        >
     <Grid>
         <Label x:Name="labelOperation" Content="5秒后清理桌面" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#FFEE796F"/>
         <Label Content="日志:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,45,0,0"/>
-        <Aduskin:MetroTextBox x:Name="LogOutput" Margin="0,70,0,35" Text="准备清理桌面！"/>
-        <Aduskin:MetroProgressBar x:Name="ProgressBar" VerticalAlignment="Bottom" Height="15" Margin="5,0,5,10"/>
+        <Aduskin:MetroTextBox x:Name="LogOutput" Margin="0,70,0,35" Text="准备清理桌面！" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Auto"/>
+        <Aduskin:MetroProgressBar x:Name="ProgressBar" VerticalAlignment="Bottom" Height="15" Margin="5,0,5,10" />
     </Grid>
 </Aduskin:MetroWindow>

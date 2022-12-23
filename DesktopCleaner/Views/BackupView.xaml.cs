@@ -79,6 +79,7 @@ namespace DesktopCleaner.Views
         #endregion
         private void GetFiles()
         {
+            if(!Directory.Exists(backupDir))return;
             DirectoryInfo d = new DirectoryInfo(backupDir);
             FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
             //先文件夹后文件
@@ -159,6 +160,17 @@ namespace DesktopCleaner.Views
             SyncTime();
             GetFiles();
             Update();
+        }
+
+        private void DataGridRow_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //FileList[datagridFileview.SelectedIndex].IsChecked = !FileList[datagridFileview.SelectedIndex].IsChecked;
+            var item = (DataGridRow)sender;
+            FrameworkElement objElement = datagridFileview.Columns[0].GetCellContent(item);
+            if (objElement != null)
+            {
+                FileItem o = (FileItem)objElement;
+            }
         }
 
         private void btnRestoreChecked_Click(object sender, RoutedEventArgs e)

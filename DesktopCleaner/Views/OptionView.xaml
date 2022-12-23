@@ -10,7 +10,7 @@
     <Grid Grid.Column="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="7*"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="PathSettings" Grid.Row="0">
@@ -20,14 +20,17 @@
             </Grid.RowDefinitions>
 
             <AduSkin:MetroTextBox x:Name="textDesktopPath" TextWrapping="Wrap" Width="Auto" VerticalAlignment="Center" Margin="120,20,90,20" />
-            <AduSkin:MetroTextBlock Grid.Row="0" HorizontalAlignment="Left" Margin="20,20,20,20" TextWrapping="Wrap" Text="清理桌面目录：" VerticalAlignment="Center"/>
+            <Label Target="{Binding ElementName=textDesktopPath}" Grid.Row="0" HorizontalAlignment="Left" Margin="20,20,20,20" Content="清理桌面目录：" VerticalAlignment="Center"/>
             <AduSkin:AduFlatButton x:Name="btnViewDesktopPath" Content="浏览..." HorizontalAlignment="Right" VerticalAlignment="Center" Width="65" Margin="0,0,10,0" Click="btnViewDesktopPath_Click"/>
 
             <AduSkin:MetroTextBox x:Name="textBackupPath" TextWrapping="Wrap" Width="Auto" VerticalAlignment="Center" Margin="120,20,90,20" Grid.Row="1" />
-            <AduSkin:MetroTextBlock Grid.Row="1" HorizontalAlignment="Left" Margin="20,20,20,20" TextWrapping="Wrap" Text="备份文件目录：" VerticalAlignment="Center"/>
+            <Label Target="{Binding ElementName=textBackupPath}" Grid.Row="1" HorizontalAlignment="Left" Margin="20,20,20,20" Content="备份文件目录：" VerticalAlignment="Center"/>
             <AduSkin:AduFlatButton x:Name="btnViewBackupPath" Content="浏览..." HorizontalAlignment="Right" VerticalAlignment="Center" Width="65" Margin="0,0,10,0" Grid.Row="1" Cursor="Hand" Click="btnViewBackupPath_Click"/>
         </Grid>
-        <AduSkin:AduFlatButton x:Name="btnSave" Content="保存配置(重启此软件生效)" HorizontalAlignment="Stretch" Grid.Row="2" Margin="10,10,10,10" VerticalAlignment="Stretch" Width="Auto" Click="btnSave_Click"/>
+        <UniformGrid Grid.Row="2">
+            <AduSkin:AduFlatButton x:Name="btnReset" Content="恢复默认" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Stretch" Width="Auto" Click="btnReset_Click"/>
+            <AduSkin:AduFlatButton x:Name="btnSave" Content="保存配置" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Stretch" Width="Auto" Click="btnSave_Click"/>
+        </UniformGrid>
         <UniformGrid x:Name="Checks"  Grid.Row="1" Cursor="Hand" Margin="10,10,10,10">
             <AduSkin:AduCheckBox x:Name="checkStartup" Margin="5,5,5,5" Content="加入开机启动" Cursor="Hand" IsChecked="True"/>
             <AduSkin:AduCheckBox x:Name="checkDate" Margin="5,5,5,5" Content="分日期文件夹" Cursor="Hand" IsChecked="True"/>
