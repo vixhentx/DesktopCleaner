@@ -6,7 +6,6 @@
     <SolidColorBrush x:Key="DisableSide">#FFFFFF</SolidColorBrush>
     <SolidColorBrush x:Key="WindowBackground" Color="White"/>
     <System:String x:Key="AboutContent" xml:space="preserve">
-        软件处于测试阶段，略有不完善之处&#13;
-        Version 0.0.8  Powered by vix_hentx
+        Version 1.0.0.0   by vix_hentx
     </System:String>
 </ResourceDictionary>

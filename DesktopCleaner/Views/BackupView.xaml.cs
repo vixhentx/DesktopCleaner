@@ -2,6 +2,7 @@
 using DesktopCleaner.ViewBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,21 +35,9 @@ namespace DesktopCleaner.Views
             FileList = new List<FileItem>();
             datePicker.SelectedDate = DateTime.Now;
 
-            SyncTime();
-            GetFiles();
-            datagridFileview.ItemsSource = FileList;
         }
         #region Events
 
-        private void btnDeleteSelected_Click(object sender, RoutedEventArgs e)
-        {
-            if (datagridFileview.SelectedIndex < 0) return;
-            string path = FileList[datagridFileview.SelectedIndex].FilePath;
-            FileHelper.Delete(path);
-            FileList.Clear();
-            GetFiles();
-            Update();
-        }
 
         private void btnDeleteChecked_Click(object sender, RoutedEventArgs e)
         {
@@ -66,6 +55,7 @@ namespace DesktopCleaner.Views
 
         private void btnOpenPublicDesktop_Click(object sender, RoutedEventArgs e)
         {
+            if (!Directory.Exists(backupDir)) return;
             System.Diagnostics.Process.Start(backupDir);
         }
 
@@ -79,7 +69,7 @@ namespace DesktopCleaner.Views
         #endregion
         private void GetFiles()
         {
-            if(!Directory.Exists(backupDir))return;
+            if (!Directory.Exists(backupDir)) return;
             DirectoryInfo d = new DirectoryInfo(backupDir);
             FileSystemInfo[] fsinfos = d.GetFileSystemInfos();
             //先文件夹后文件
@@ -123,7 +113,7 @@ namespace DesktopCleaner.Views
 
         private void AduCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            foreach(FileItem fileItem in FileList)
+            foreach (FileItem fileItem in FileList)
             {
                 fileItem.IsChecked = true;
             }
@@ -139,38 +129,24 @@ namespace DesktopCleaner.Views
             Update();
         }
 
-        private void btnRestoreSelected_Click(object sender, RoutedEventArgs e)
+
+
+        private void datagridFileview_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (datagridFileview.SelectedIndex < 0) return;
-            string path = FileList[datagridFileview.SelectedIndex].FilePath;
-            if(FileHelper.IsDir(path))
+            var dataGrid = (DataGrid)sender;
+            var row = dataGrid.SelectedItem as FileItem;
+            if (row != null)
             {
-                FileHelper.MoveFolder(path, Path.Combine(desktopDir,Path.GetFileName(path)));
-                FileHelper.Delete(path);
+                row.IsChecked = !row.IsChecked;
             }
-            else FileHelper.Move(path, Path.Combine(desktopDir,Path.GetFileName(path)));
-            FileList.Clear();
-            GetFiles();
-            Update();
         }
 
-        private void btnConfirm_Click(object sender, RoutedEventArgs e)
+        private void datePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             FileList.Clear();
             SyncTime();
             GetFiles();
             Update();
-        }
-
-        private void DataGridRow_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //FileList[datagridFileview.SelectedIndex].IsChecked = !FileList[datagridFileview.SelectedIndex].IsChecked;
-            var item = (DataGridRow)sender;
-            FrameworkElement objElement = datagridFileview.Columns[0].GetCellContent(item);
-            if (objElement != null)
-            {
-                FileItem o = (FileItem)objElement;
-            }
         }
 
         private void btnRestoreChecked_Click(object sender, RoutedEventArgs e)
@@ -197,5 +173,6 @@ namespace DesktopCleaner.Views
             DateTime dt = (DateTime)datePicker.SelectedDate;
             backupDir = Path.Combine(backuppath, dt.ToString("yyyy\\\\MM\\\\dd"));
         }
+
     }
 }

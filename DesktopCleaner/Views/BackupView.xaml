@@ -4,17 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopCleaner.Views"
-             xmlns:AduSkin="clr-namespace:AduSkin.Controls.Metro;assembly=AduSkin"
+             xmlns:AduSkin="clr-namespace:AduSkin.Controls.Metro;assembly=AduSkin" xmlns:viewbase="clr-namespace:DesktopCleaner.ViewBase" d:DataContext="{d:DesignInstance Type=viewbase:FileItem}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="{StaticResource WindowBackground}">
     <Grid>
         <Label Content="备份文件夹日期:" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Grid  Margin="0,30,150,0">
-            <AduSkin:AduDataGrid x:Name="datagridFileview">
+            <AduSkin:AduDataGrid x:Name="datagridFileview" MouseDoubleClick="datagridFileview_MouseDoubleClick">
                 <DataGrid.RowStyle >
                     <Style TargetType="DataGridRow">
-                        <EventSetter Event="GotFocus" Handler="DataGridRow_GotFocus"/>
                         <Setter Property="Background" Value="White"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -38,6 +37,7 @@
                             <DataTemplate>
                                 <AduSkin:AduCheckBox Margin="10,0,0,0" IsChecked="{Binding Path=IsChecked,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             </DataTemplate>
+
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn CanUserResize="True">
@@ -55,15 +55,13 @@
             </AduSkin:AduDataGrid>
         </Grid>
         <StackPanel HorizontalAlignment="Right" Width="150" Margin="0,25,0,0">
-            <AduSkin:AduFlatButton x:Name="btnRestoreSelected" Content="还原选中文件(夹)" Margin="0,15,0,15" Click="btnRestoreSelected_Click" />
-            <!--<AduSkin:AduFlatButton x:Name="btnRestoreChecked" Content="还原勾选文件(夹)" Margin="0,15,0,15" Click="btnRestoreChecked_Click" /> -->
-            <AduSkin:AduFlatButton x:Name="btnDeleteSelected" Content="删除选中文件(夹)" Margin="0,15,0,15" Click="btnDeleteSelected_Click"/>
-            <!-- <AduSkin:AduFlatButton x:Name="btnDeleteChecked" Content="删除勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/> -->
+            <AduSkin:AduFlatButton x:Name="btnRestoreChecked" Content="还原勾选文件(夹)" Margin="0,15,0,15" Click="btnRestoreChecked_Click" />
+            <AduSkin:AduFlatButton x:Name="btnDeleteChecked" Content="删除勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/>
             <AduSkin:AduFlatButton x:Name="btnOpenPublicDesktop" Content="打开备份文件夹" Margin="0,15,0,15" Click="btnOpenPublicDesktop_Click"/>
             <AduSkin:AduFlatButton x:Name="btnReflash" Content="刷新" Margin="0,15,0,15" Click="btnReflash_Click"/>
 
         </StackPanel>
-        <AduSkin:AduDatePicker x:Name="datePicker" VerticalAlignment="Top" Margin="120,5,10,0" HorizontalAlignment="Left" Width="140" Height="20"/>
-        <AduSkin:AduFlatButton x:Name="btnConfirm" Content="确认" Cursor="Hand" Width="36" Height="30" VerticalAlignment="Top" Margin="280,0,0,0" HorizontalAlignment="Left" Click="btnConfirm_Click"/>
+        <DatePicker x:Name="datePicker" VerticalAlignment="Top" Margin="120,5,10,0" HorizontalAlignment="Left" Width="120" Height="20" SelectedDateChanged="datePicker_SelectedDateChanged"/>
+
     </Grid>
 </UserControl>

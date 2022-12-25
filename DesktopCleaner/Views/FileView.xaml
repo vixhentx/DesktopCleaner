@@ -10,7 +10,7 @@
     <Grid>
         <Label Content="保留文件夹:(支持拖入文件)" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Grid  Margin="0,30,150,0">
-            <AduSkin:AduDataGrid x:Name="datagridFileview" AllowDrop="True" Drop="gridDrop_Drop" DragEnter="gridDrop_DragEnter">
+            <AduSkin:AduDataGrid x:Name="datagridFileview" AllowDrop="True" Drop="gridDrop_Drop" DragEnter="gridDrop_DragEnter" MouseDoubleClick="datagridFileview_MouseDoubleClick">
                 <DataGrid.RowStyle >
                     <Style TargetType="DataGridRow">
                         <Setter Property="Background" Value="White"/>
@@ -55,7 +55,6 @@
         <StackPanel HorizontalAlignment="Right" Width="150" Margin="0,25,0,0">
             <AduSkin:AduFlatButton x:Name="btnAddFile" Content="&lt;-添加文件..." Click="btnAddFile_Click" Margin="0,15,0,15"/>
             <AduSkin:AduFlatButton x:Name="btnAddFolder" Content="&lt;-添加文件夹..." Margin="0,15,0,15" Click="btnAddFolder_Click"/>
-            <AduSkin:AduFlatButton x:Name="btnDeleteSelected" Content="删除选中文件(夹)" Margin="0,15,0,15" Click="btnDeleteSelected_Click"/>
             <AduSkin:AduFlatButton x:Name="btnDeleteChecked" Content="删除勾选文件(夹)" Margin="0,15,0,15" Click="btnDeleteChecked_Click"/>
             <AduSkin:AduFlatButton x:Name="btnOpenPublicDesktop" Content="打开保留文件夹" Margin="0,15,0,15" Click="btnOpenPublicDesktop_Click"/>
             <AduSkin:AduFlatButton x:Name="btnReflash" Content="刷新" Margin="0,15,0,15" Click="btnReflash_Click"/>

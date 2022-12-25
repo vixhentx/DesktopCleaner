@@ -19,7 +19,7 @@ namespace DesktopCleaner.Views
     public partial class FileView : UserControl
     {
         private List<FileItem> FileList;
-        private string publicDesktopDir= Functions.GetAllUsersDesktopFolderPath();
+        private string publicDesktopDir = Functions.GetAllUsersDesktopFolderPath();
 
         public FileView()
         {
@@ -32,13 +32,13 @@ namespace DesktopCleaner.Views
             #endregion
         }
 
-       
+
 
         private void btnAddFile_Click(object sender, RoutedEventArgs e)
         {
-            string []filepaths = Functions.SelectFiles();
+            string[] filepaths = Functions.SelectFiles();
             if (filepaths == null) return;
-            FileHelper.CopyFiles(filepaths,publicDesktopDir);
+            FileHelper.CopyFiles(filepaths, publicDesktopDir);
             FileList.Clear();
             GetFiles();
             Update();
@@ -59,7 +59,7 @@ namespace DesktopCleaner.Views
         {
             datagridFileview.ItemsSource = null;
             datagridFileview.ItemsSource = FileList;
-        } 
+        }
         private void GetFiles()
         {
             DirectoryInfo d = new DirectoryInfo(publicDesktopDir);
@@ -67,7 +67,7 @@ namespace DesktopCleaner.Views
             //先文件夹后文件
             foreach (FileSystemInfo x in fsinfos)
             {
-                if(x is DirectoryInfo)
+                if (x is DirectoryInfo)
                 {
                     FileItem fileItem = new FileItem
                     {
@@ -98,15 +98,6 @@ namespace DesktopCleaner.Views
             }
 
         }
-        private void btnDeleteSelected_Click(object sender, RoutedEventArgs e)
-        {
-            if (datagridFileview.SelectedIndex < 0) return;
-            string path = FileList[datagridFileview.SelectedIndex].FilePath;
-            FileHelper.Delete(path);
-            FileList.Clear();
-            GetFiles();
-            Update();
-        }
         private void btnDeleteChecked_Click(object sender, RoutedEventArgs e)
         {
             foreach (FileItem file in FileList)
@@ -122,7 +113,7 @@ namespace DesktopCleaner.Views
         }
         private void AduCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            foreach(FileItem file in FileList)
+            foreach (FileItem file in FileList)
             {
                 file.IsChecked = true;
             }
@@ -152,19 +143,20 @@ namespace DesktopCleaner.Views
 
         private void gridDrop_Drop(object sender, DragEventArgs e)
         {
-            string filepath ;
+            string filepath;
             if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
             {
                 int count = ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)).Length;
                 for (int i = 0; i < count; i++)
                 {
-                    filepath = ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)).GetValue(i).ToString(); 
-                    if(FileHelper.IsDir(filepath))
+                    filepath = ((System.Array)e.Data.GetData(System.Windows.DataFormats.FileDrop)).GetValue(i).ToString();
+                    if (FileHelper.IsDir(filepath))
                     {
                         FileHelper.CopyFolder(filepath, Path.Combine(publicDesktopDir, Path.GetFileName(filepath)));
-                    }else//是文件
+                    }
+                    else//是文件
                     {
-                        FileHelper.DCC("Copy", filepath ,Path.Combine(publicDesktopDir, Path.GetFileName(filepath)));
+                        FileHelper.DCC("Copy", filepath, Path.Combine(publicDesktopDir, Path.GetFileName(filepath)));
                     }
                 }
             }
@@ -184,6 +176,16 @@ namespace DesktopCleaner.Views
                 e.Effects = DragDropEffects.None;
             }
         }
+
+        private void datagridFileview_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var dataGrid = (DataGrid)sender;
+            var row = dataGrid.SelectedItem as FileItem;
+            if (row != null)
+            {
+                row.IsChecked = !row.IsChecked;
+            }
+        }
     }
-    
+
 }
